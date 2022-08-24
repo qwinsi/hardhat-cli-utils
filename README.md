@@ -84,7 +84,7 @@ const config = {
   
   ```shell
   $ npx hardhat --network goerli read Box 0xb62208Cf91f8654D1Baa7Af12d1C6f7ad655dcd8 getValue
-Return:  BigNumber { value: "123" }
+  Return:  BigNumber { value: "123" }
   ```
 
 - write
