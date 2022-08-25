@@ -1,16 +1,16 @@
 /**
  *
  * @param hre: HardhatRuntimeEnvironment
- * @param name: string
+ * @param name: string, contract class name
  * @returns
  */
-async function getInitCode(hre, name) {
-    const factory = await hre.ethers.getContractFactory(name);
-    console.log(factory.bytecode);
+function getInitCode(hre, name) {
+    const bytecode = hre.artifacts.readArtifactSync(name).bytecode;
+    console.log(bytecode);
 }
 
 task('initcode', "Get the creation bytecode (excluding constructor parameters part)")
     .addPositionalParam('name', "Name of contract type")
     .setAction(async (taskArgs, hre) => {
-        await getInitCode(hre, taskArgs.name);
+        getInitCode(hre, taskArgs.name);
     });

@@ -1,16 +1,16 @@
 # Hardhat CLI Utils
 
-This package contains many predefined hardhat tasks to help you play with smart contracts by CLI.
+This repository contains many predefined [hardhat](https://hardhat.org/) [tasks](https://hardhat.org/hardhat-runner/docs/advanced/create-task) to help you play with smart contracts by CLI.
 
-| Task     | Description                                                   |
-| -------- | ------------------------------------------------------------- |
-| deploy   | Deploy contract.                                              |
-| read     | Call (read) the method of contract on given address           |
-| write    | Call (write) the method of contract on given address          |
-| nonce    | Get the nonce of given account                                |
-| bytecode | Get the runtime byte code on given contract address           |
+| Task     | Description                                                        |
+|----------|--------------------------------------------------------------------|
+| deploy   | Deploy contract.                                                   |
+| read     | Call (read) the method of contract on given address                |
+| write    | Call (write) the method of contract on given address               |
+| nonce    | Get the nonce of given account                                     |
+| bytecode | Get the runtime byte code on given contract address                |
 | initcode | Get the creation byte code (excluding constructor parameters part) |
-| dig      | Resolve given ENS domain name                                 |
+| dig      | Resolve given ENS domain name                                      |
 
 ## Installation
 
@@ -55,77 +55,117 @@ And you have set up a test-net environment, in our example, Goerli.
 ```js
 // hardhat.config.js or hardhat.config.js
 const config = {
-    networks: {
-        goerli: {
-            url: "REPLACE_THIS_WITH_YOUR_RPC_URL",
-            accounts: ["REPLACE_THIS_WITH_YOUR_PRIVATE_KEY"]
-        },
+  networks: {
+    goerli: {
+      url: "REPLACE_THIS_WITH_YOUR_RPC_URL",
+      accounts: ["REPLACE_THIS_WITH_YOUR_PRIVATE_KEY"]
+    },
+  }
 }
 ```
 
 
 
-- deploy
+### deploy
 
-  Run with `npx hardhat --network <network> deploy <class> [...params]`. 
+Run with `npx hardhat --network <network> deploy <class> [...params]`. 
 
-  On success, the address of contract created is outputted.
+On success, the address of contract created is outputted.
 
-  ```shell
-  $ npx hardhat --network goerli deploy Box 123
-  0xb62208Cf91f8654D1Baa7Af12d1C6f7ad655dcd8
-  ```
+```shell
+$ npx hardhat --network goerli deploy Box 123
+0xb62208Cf91f8654D1Baa7Af12d1C6f7ad655dcd8
+```
 
-- read
+### read
 
-  Run with `npx hardhat --network <network> read <class> <address> <method> [...params]`. 
+Run with `npx hardhat --network <network> read <class> <address> <method> [...params]`. 
 
-  On success, the returned result is showed.
-  
-  ```shell
-  $ npx hardhat --network goerli read Box 0xb62208Cf91f8654D1Baa7Af12d1C6f7ad655dcd8 getValue
-  Return:  BigNumber { value: "123" }
-  ```
+On success, the returned result is showed.
 
-- write
+```shell
+$ npx hardhat --network goerli read Box 0xb62208Cf91f8654D1Baa7Af12d1C6f7ad655dcd8 getValue
+Return:  BigNumber { value: "123" }
+```
 
-  Run with `npx hardhat --network <network> write <class> <address> <method> [...params]`. 
+### write
 
-  On success, it output the link to view this transaction on [Etherscan](https://etherscan.io) . If there are events emitted during this transaction, then the events are showed.
+Run with `npx hardhat --network <network> write <class> <address> <method> [...params]`. 
 
-  ```shell
-  $ npx hardhat --network goerli write Box 0xb62208Cf91f8654D1Baa7Af12d1C6f7ad655dcd8 setValue 456
-  View this tx at https://goerli.etherscan.io/tx/0x32e051dc4f3d20395b00b3715a23e908d5eaa4010ba237214f385676ff3c80bd
-  No event emitted.
-  Done!
-  ```
+On success, it output the link to view this transaction on [Etherscan](https://etherscan.io) . If there are events emitted during this transaction, then the events are showed.
 
-- nonce
+```shell
+$ npx hardhat --network goerli write Box 0xb62208Cf91f8654D1Baa7Af12d1C6f7ad655dcd8 setValue 456
+View this tx at https://goerli.etherscan.io/tx/0x32e051dc4f3d20395b00b3715a23e908d5eaa4010ba237214f385676ff3c80bd
+No event emitted.
+Done!
+```
 
-  Run with `npx hardhat --network <network> nonce <address>`. 
+### nonce
 
-  Output the nonce of given account.
+Run with `npx hardhat --network <network> nonce <address>`. 
 
-  ```shell
-  $ npx hardhat --network goerli nonce 0xb62208Cf91f8654D1Baa7Af12d1C6f7ad655dcd8
-  1
-  ```
+Output the nonce of given account.
 
-- etc.
+```shell
+$ npx hardhat --network goerli nonce 0xb62208Cf91f8654D1Baa7Af12d1C6f7ad655dcd8
+1
+```
 
-  For usage of other more tasks, run `npx hardhat <task> --help`.
 
-  ```shell
-  $ npx hardhat bytecode --help
-  $ npx hardhat initcode --help
-  $ npx hardhat dig --help
-  ```  
+### initcode
 
+For the creation byte code of a contract of given class, run `npx hardhat initcode <class>`.
+
+```shell
+$ npx hardhat initcode Box
+0x608060405234801561001057600080fd5b5060405161010a38038061010a83398101604081905261002f91610037565b600055610050565b60006020828403121561004957600080fd5b5051919050565b60ac8061005e6000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c8063209652551460375780635524107714604c575b600080fd5b60005460405190815260200160405180910390f35b605c6057366004605e565b600055565b005b600060208284031215606f57600080fd5b503591905056fea2646970667358221220b23e771e24a1806f389a28918dce80947911d0a0243543ea7af07c813207c99564736f6c63430008090033
+```
+
+**Contracts with Libraries** 
+
+Some contracts need to be linked with libraries before they are deployed. **In such case, the output will not be pure hex string**. Instead, the output contains a placeholder in which the library contract address should be filled. For example, an output may be like this: (Notice the two $ symbols in bytecode)
+
+```
+0x608060405234801561001057600080fd5b50610192806100206000396000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c8063165c4a1614610030575b600080fd5b61004361003e3660046100fd565b610064565b604080519283526001600160a01b0390911660208301520160405180910390f35b6040516332292b2760e21b81526004810183905260248101829052600090819073__$118fb7ce387586ecccae2b5c8d4a11c6b1$__9063c8a4ac9c90604401604080518083038186803b1580156100ba57600080fd5b505af41580156100ce573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906100f2919061011f565b915091509250929050565b6000806040838503121561011057600080fd5b50508035926020909101359150565b6000806040838503121561013257600080fd5b825160208401519092506001600160a01b038116811461015157600080fd5b80915050925092905056fea26469706673582212207fee896a627c16dca0cfa37edb26a96e129bc36672aabb59ce8f9ab5cdc7143664736f6c63430008090033
+```
+
+After replacing `__$118fb7ce387586ecccae2b5c8d4a11c6b1$__` with the library contract address, you get the actual creation code.
+
+### bytecode
+
+For the runtime byte code of a contract at given address, run `npx hardhat --network <network> bytecode <address>`.
+
+```shell
+$ npx hardhat --network goerli bytecode 0xb62208Cf91f8654D1Baa7Af12d1C6f7ad655dcd8
+# The output is omitted...
+```
+
+For the runtime byte code of a contract of given class, run `npx hardhat bytecode <class>`.
+
+```shell
+$ npx hardhat bytecode Box
+0x6080604052348015600f57600080fd5b506004361060325760003560e01c8063209652551460375780635524107714604c575b600080fd5b60005460405190815260200160405180910390f35b605c6057366004605e565b600055565b005b600060208284031215606f57600080fd5b503591905056fea2646970667358221220b23e771e24a1806f389a28918dce80947911d0a0243543ea7af07c813207c99564736f6c63430008090033
+```
+
+**Contracts with Libraries**
+
+Similar to the situation of the `initcode` command, if your contract need to be linked with libraries, the output will contain an address placeholder.
+
+
+### dig
+
+```shell
+$ npx hardhat --network goerli dig example.eth
+0x9548650b6A1775d3d411D625207519b7Fe227A5a
+```
 
 ## Looking for other features?
 
+Well, there are also many other awesome packages extending hardhat CLI, such as
 - verify
 
   [hardhat-etherscan](https://github.com/NomicFoundation/hardhat/tree/master/packages/hardhat-etherscan) can help you verify and publish contract source code on  [Etherscan](https://etherscan.io).
 
-  
+Or, any contribution to this repository is welcome :-)
+
