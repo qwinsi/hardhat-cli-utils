@@ -49,13 +49,17 @@ async function writeContract(hre, name, address, method, argv) {
 //     params?:    any[],
 // }
 
-task('write', "Write contract on given address")
-    .addPositionalParam('name', "Name of contract type")
-    .addPositionalParam('address', "Address of contract to call")
-    .addPositionalParam('method', "Method to call")
-    .addOptionalVariadicPositionalParam('params', "Parameters passed to method")
-    .setAction(async (taskArgs /* CallTaskArgs */, hre) => {
-        const {name, address, method} = taskArgs;
-        const argv = taskArgs.params?? [];
-        await writeContract(hre, name, address, method, argv);
-    });
+function registerTask(commandName) {
+    task(commandName, "Write contract on given address")
+        .addPositionalParam('name', "Name of contract type")
+        .addPositionalParam('address', "Address of contract to call")
+        .addPositionalParam('method', "Method to call")
+        .addOptionalVariadicPositionalParam('params', "Parameters passed to method")
+        .setAction(async (taskArgs /* CallTaskArgs */, hre) => {
+            const {name, address, method} = taskArgs;
+            const argv = taskArgs.params?? [];
+            await writeContract(hre, name, address, method, argv);
+        });
+}
+
+module.exports = registerTask;

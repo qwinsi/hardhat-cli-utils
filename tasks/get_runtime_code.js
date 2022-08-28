@@ -20,16 +20,19 @@ function getRuntimeCodeOfClass(hre, name) {
     console.log(code);
 }
 
+function registerTask(commandName) {
+    task(commandName, "Get the runtime bytecode on given contract address")
+        .addPositionalParam('addressOrClass', "Address of deployed contract or contract class name")
+        .setAction(async (taskArgs, hre) => {
+            if (taskArgs.addressOrClass.startsWith("0x")) {
+                const address = taskArgs.addressOrClass;
+                await getRuntimeCodeAtAddress(hre, address);
+            }
+            else {
+                const name = taskArgs.addressOrClass;
+                getRuntimeCodeOfClass(hre, name);
+            }
+        });
+}
 
-task('bytecode', "Get the runtime bytecode on given contract address")
-    .addPositionalParam('addressOrClass', "Address of deployed contract or contract class name")
-    .setAction(async (taskArgs, hre) => {
-        if (taskArgs.addressOrClass.startsWith("0x")) {
-            const address = taskArgs.addressOrClass;
-            await getRuntimeCodeAtAddress(hre, address);
-        }
-        else {
-            const name = taskArgs.addressOrClass;
-            getRuntimeCodeOfClass(hre, name);
-        }
-    });
+module.exports = registerTask;

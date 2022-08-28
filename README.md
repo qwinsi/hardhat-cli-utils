@@ -1,6 +1,6 @@
 # Hardhat CLI Utils
 
-This repository contains many predefined [hardhat](https://hardhat.org/) [tasks](https://hardhat.org/hardhat-runner/docs/advanced/create-task) to help you play with smart contracts by CLI.
+This repository contains many predefined [hardhat](https://hardhat.org/) [tasks](https://hardhat.org/hardhat-runner/docs/advanced/create-task) as hardhat subcommands to help you play with smart contracts by CLI.
 
 | Task     | Description                                                        |
 |----------|--------------------------------------------------------------------|
@@ -20,15 +20,34 @@ npm install --save-dev hardhat-cli-utils
 
 And add the following statement to your `hardhat.config.js`:
 
-```shell
-require("hardhat-cli-utils");
+```js
+const hcu = require("hardhat-cli-utils");
+hcu.registerAll();
 ```
 
 Or, if you are using TypeScript, add this to your `hardhat.config.ts`:
 
-```shell
-import "hardhat-cli-utils";
+```typescript
+import hcu from "hardhat-cli-utils";
+hcu.registerAll();
 ```
+
+`hcu.registerAll` will register all sub-commands predefined in this package. 
+
+There are also additional ways to register sub-commands more specifically.
+
+You can use `hcu.register`   to explicitly specify which commands you want to register. For exmaple, 
+
+```js
+hcu.register(['read', 'write', 'dig', 'deploy']); // Register these 4 only
+```
+
+You can use `hcu.registerExcluding` to resigster all sub-commands apart from what you list. For example, you may perfer the `deploy` sub-command provided by [hardhat-deploy](https://github.com/wighawag/hardhat-deploy) instead of this package, so you write the following statement to avoid confliction
+
+```js
+hcu.registerExcluding(['deploy']);
+```
+
 
 
 ## Usage by Examples

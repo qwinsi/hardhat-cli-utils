@@ -36,13 +36,17 @@ async function readContract(hre, name, address, method, argv) {
 //     params?:    any[],
 // }
 
-task('read', "Call (read) the method of contract on given address")
-    .addPositionalParam('name', "Name of contract type")
-    .addPositionalParam('address', "Address of contract to call")
-    .addPositionalParam('method', "Method to call")
-    .addOptionalVariadicPositionalParam('params', "Parameters passed to method")
-    .setAction(async (taskArgs /* CallTaskArgs */, hre) => {
-        const {name, address, method} = taskArgs;
-        const argv = taskArgs.params? taskArgs.params: [];
-        await readContract(hre, name, address, method, argv);
-    });
+function registerTask(commandName) {
+    task(commandName, "Call (read) the method of contract on given address")
+        .addPositionalParam('name', "Name of contract type")
+        .addPositionalParam('address', "Address of contract to call")
+        .addPositionalParam('method', "Method to call")
+        .addOptionalVariadicPositionalParam('params', "Parameters passed to method")
+        .setAction(async (taskArgs /* CallTaskArgs */, hre) => {
+            const {name, address, method} = taskArgs;
+            const argv = taskArgs.params? taskArgs.params: [];
+            await readContract(hre, name, address, method, argv);
+        });
+}
+
+module.exports = registerTask;

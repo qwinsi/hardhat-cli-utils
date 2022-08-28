@@ -40,7 +40,8 @@ async function deploy(hre, name, argv, verbose) {
 // }
 
 // Usage: hardhat deploy [--detailed] <name> [...params]
-task('deploy', "Deploy contract")
+function registerTask(commandName) {
+    task(commandName, "Deploy contract")
     // We cannot use 'verbose' as flag name since it's reserved by Hardhat :(
     .addFlag('detailed', "Expose details")
     .addPositionalParam('name', "Name of contract to deploy")
@@ -50,3 +51,6 @@ task('deploy', "Deploy contract")
         const argv = taskArgs.params? taskArgs.params: [];
         await deploy(hre, taskArgs.name, argv, verbose);
     });
+}
+
+module.exports = registerTask;

@@ -9,9 +9,12 @@ async function getNonce(hre, address) {
     console.log(nonce);
 }
 
+function registerTask(commandName) {
+    task(commandName, "Get the nonce of given account")
+        .addPositionalParam('address', "Address of account")
+        .setAction(async (taskArgs, hre) => {
+            await getNonce(hre, taskArgs.address);
+        });
+}
 
-task('nonce', "Get the nonce of given account")
-    .addPositionalParam('address', "Address of account")
-    .setAction(async (taskArgs, hre) => {
-        await getNonce(hre, taskArgs.address);
-    });
+module.exports = registerTask;

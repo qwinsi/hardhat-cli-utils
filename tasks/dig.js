@@ -9,8 +9,12 @@ async function ensResolve(hre, name) {
     console.log(address);
 }
 
-task('dig', "Resolve given ENS domain name")
-    .addPositionalParam('domain', "Domain name")
-    .setAction(async (taskArgs, hre) => {
-        await ensResolve(hre, taskArgs.domain);
-    });
+function registerTask(commandName) {
+    task(commandName, "Resolve given ENS domain name")
+        .addPositionalParam('domain', "Domain name")
+        .setAction(async (taskArgs, hre) => {
+            await ensResolve(hre, taskArgs.domain);
+        });
+}
+
+module.exports = registerTask;

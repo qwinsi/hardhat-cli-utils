@@ -9,8 +9,12 @@ function getInitCode(hre, name) {
     console.log(bytecode);
 }
 
-task('initcode', "Get the creation bytecode (excluding constructor parameters part)")
+function registerTask(commandName) {
+task(commandName, "Get the creation bytecode (excluding constructor parameters part)")
     .addPositionalParam('name', "Name of contract type")
     .setAction(async (taskArgs, hre) => {
-        getInitCode(hre, taskArgs.name);
+        await getInitCode(hre, taskArgs.name);
     });
+}
+
+module.exports = registerTask;
