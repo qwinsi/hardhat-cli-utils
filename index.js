@@ -1,4 +1,6 @@
 const available_tasks = {};
+available_tasks['balance']  = require("./tasks/get_balance.js");
+available_tasks['chain-id'] = require("./tasks/get_chain_id.js");
 available_tasks['deploy']   = require("./tasks/deploy.js");
 available_tasks['dig']      = require("./tasks/dig.js");
 available_tasks['nonce']    = require("./tasks/get_nonce.js");
@@ -7,23 +9,26 @@ available_tasks['read']     = require("./tasks/read_contract.js");
 available_tasks['bytecode'] = require("./tasks/get_runtime_code.js");
 available_tasks['write']    = require("./tasks/write_contract.js");
 
+function _register(taskName, commandName) {
+    available_tasks[taskName](commandName);
+}
 
-function register(tasks) {
+function register(tasks, prefix="") {
     for (const task_name of tasks) {
-        available_tasks[task_name](task_name);
+        _register(task_name, prefix + task_name);
     }
 }
 
-function registerExcluding(tasks) {
+function registerExcluding(tasks, prefix="") {
     const tasks_to_add = new Set(Object.keys(available_tasks));
     for (const task_name of tasks) {
         tasks_to_add.delete(task_name);
     }
-    register(tasks_to_add)
+    register(tasks_to_add, prefix);
 }
 
-function registerAll() {
-    register(Object.keys(available_tasks))
+function registerAll(prefix="") {
+    register(Object.keys(available_tasks), prefix);
 }
 
 

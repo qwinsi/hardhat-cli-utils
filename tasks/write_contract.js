@@ -8,8 +8,6 @@
  * @returns
  */
 async function writeContract(hre, name, address, method, argv) {
-    const factory = await hre.ethers.getContractFactory(name);
-
     // Check that:
     // 1. `method` is a method of contract
     // 2. `argv` inputted matches the prototype of method
@@ -24,7 +22,7 @@ async function writeContract(hre, name, address, method, argv) {
         }
     }
 
-    const contract = factory.attach(address);
+    const contract = await hre.ethers.getContractAt(name, address);
     const tx = await contract[method](...argv);
 
     const network = await hre.ethers.provider.getNetwork();
