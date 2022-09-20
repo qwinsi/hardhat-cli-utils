@@ -8,6 +8,7 @@ available_tasks['initcode'] = require("./tasks/get_init_code.js");
 available_tasks['read']     = require("./tasks/read_contract.js");
 available_tasks['bytecode'] = require("./tasks/get_runtime_code.js");
 available_tasks['write']    = require("./tasks/write_contract.js");
+available_tasks['version-pragma'] = require("./tasks/change-version-pragma.js");
 
 function _register(taskName, commandName) {
     available_tasks[taskName](commandName);

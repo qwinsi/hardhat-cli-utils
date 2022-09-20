@@ -2,17 +2,18 @@
 
 This repository contains many predefined [hardhat](https://hardhat.org/) [tasks](https://hardhat.org/hardhat-runner/docs/advanced/create-task) as hardhat subcommands to help you play with smart contracts by CLI.
 
-| Task     | Description                                                        |
-|----------|--------------------------------------------------------------------|
-| balance  | Get the balance of given account                                   |
-| chain-id | Get the chain ID of network                                        |
-| deploy   | Deploy contract                                                    |
-| read     | Call (read) the method of contract on given address                |
-| write    | Call (write) the method of contract on given address               |
-| nonce    | Get the nonce of given account                                     |
-| bytecode | Get the runtime byte code on given contract address                |
-| initcode | Get the creation byte code (excluding constructor parameters part) |
-| dig      | Resolve given ENS domain name                                      |
+| Task           | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| balance        | Get the balance of given account                             |
+| chain-id       | Get the chain ID of network                                  |
+| deploy         | Deploy contract                                              |
+| read           | Call (read) the method of contract on given address          |
+| write          | Call (write) the method of contract on given address         |
+| nonce          | Get the nonce of given account                               |
+| bytecode       | Get the runtime byte code on given contract address          |
+| initcode       | Get the creation byte code (excluding constructor parameters part) |
+| dig            | Resolve given ENS domain name                                |
+| version-pragma | Change version pragmas of solidity files in batch            |
 
 ## Installation
 
@@ -34,17 +35,17 @@ import hcu from "hardhat-cli-utils";
 hcu.registerAll();
 ```
 
-`hcu.registerAll` will register all sub-commands predefined in this package. 
+`hcu.registerAll` will register all subcommands predefined in this package. 
 
-There are also additional ways to register sub-commands more specifically.
+There are also additional ways to register subcommands more specifically.
 
-You can use `hcu.register`   to explicitly specify which commands you want to register. For exmaple, 
+You can use `hcu.register`   to explicitly specify which commands you want to register. For example, 
 
 ```js
 hcu.register(['read', 'write', 'dig', 'deploy']); // Register these 4 only
 ```
 
-You can use `hcu.registerExcluding` to resigster all sub-commands apart from what you list. For example, you may perfer the `deploy` sub-command provided by [hardhat-deploy](https://github.com/wighawag/hardhat-deploy) instead of this package, so you write the following statement to avoid confliction
+You can use `hcu.registerExcluding` to register all subcommands apart from what you list. For example, you may prefer the `deploy` subcommand provided by [hardhat-deploy](https://github.com/wighawag/hardhat-deploy) instead of this package, so you write the following statement to avoid conflict.
 
 ```js
 hcu.registerExcluding(['deploy']);
@@ -181,6 +182,22 @@ $ npx hardhat --network goerli dig example.eth
 0x9548650b6A1775d3d411D625207519b7Fe227A5a
 ```
 
+### version-pragma
+
+If you want change the [version pragma](https://docs.soliditylang.org/en/latest/layout-of-source-files.html#version-pragma) in all solidity files to the following:
+
+```solidity
+pragma solidity ^0.8.0;
+```
+
+then you can run
+
+```shell
+$ npx hardhat version-pragma "^0.8.0"
+```
+
+> **WARNING** This subcommand may damage the compatibility of your project since it will modify your source files. Make sure you can roll back the project in case of any unexpected modification before running this subcommand.
+
 ### Other subcommands
 
 We are not covering usage of all subcommands, but you can run `npx hardhat <task name> --help` for their usage.
@@ -196,6 +213,10 @@ Well, there are also many other awesome packages extending hardhat CLI, such as
 - verify
 
   [hardhat-etherscan](https://github.com/NomicFoundation/hardhat/tree/master/packages/hardhat-etherscan) can help you verify and publish contract source code on  [Etherscan](https://etherscan.io).
+  
+- prepend-spdx-license
+
+  [Hardhat SPDX License Identifier](https://github.com/ItsNickBarry/hardhat-spdx-license-identifier) can help you prepend local Solidity source files with an SPDX License Identifier.
 
 Or, any contribution to this repository is welcome :-)
 
